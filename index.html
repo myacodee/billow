@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Billow — Invoicing and payments for freelancers and studios</title>
+  <meta name="description" content="Send a quote, turn it into an invoice, collect payment online and keep your books in step, without chasing anyone.">
+  <meta name="theme-color" content="#F6F3EE">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.classList.add("js")</script>
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="nav" id="nav">
+    <div class="wrap nav__inner">
+      <a class="logo" href="#" aria-label="Billow home">
+        <svg viewBox="0 0 28 28" width="26" height="26" aria-hidden="true"><rect width="28" height="28" rx="8" fill="#071A31"/><path d="M6 17c2.5-4 5.5-4 8 0s5.5 4 8 0" fill="none" stroke="#5DDFD7" stroke-width="2.4" stroke-linecap="round"/><path d="M6 11.5c2.5-4 5.5-4 8 0s5.5 4 8 0" fill="none" stroke="#B89FFA" stroke-width="2.4" stroke-linecap="round" opacity=".9"/></svg>
+        <span>billow</span>
+      </a>
+      <nav class="nav__links" aria-label="Main">
+        <a href="#how">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#stories">Customers</a>
+      </nav>
+      <div class="nav__actions">
+        <a class="link-quiet" href="#">Log in</a>
+        <a class="btn btn--dark btn--sm" href="#start">Start free</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" data-tone="sand">
+      <div class="wrap hero__grid">
+        <div class="hero__copy">
+          <p class="tagline hero__kicker">Invoicing and payments</p>
+          <h1 class="hero__title">Get paid for the work. Skip the <em>chasing</em>.</h1>
+          <p class="hero__lede">Billow turns quotes into invoices, collects payment online and keeps your books in step, so you never send another “just following up” email.</p>
+          <form class="signup" id="hero-form" novalidate>
+            <label class="sr-only" for="hero-email">Work email</label>
+            <div class="signup__field">
+              <input id="hero-email" type="email" name="email" placeholder="Email address" autocomplete="email" aria-describedby="hero-email-msg">
+              <button class="btn btn--dark" type="submit">Start free</button>
+            </div>
+            <p class="signup__msg" id="hero-email-msg" role="status"></p>
+          </form>
+          <div class="hero__proof">
+            <span class="hero__faces" aria-hidden="true">
+              <span style="--c:#B89FFA">PN</span><span style="--c:#5DDFD7">TB</span><span style="--c:#E9E2D6">AR</span><span style="--c:#CFE0FF">HS</span>
+            </span>
+            <p><b>40,000+ freelancers and studios</b> already get paid with Billow</p>
+          </div>
+        </div>
+
+        <!-- Photo carousel: photos slide sideways and the cards move up a 3D stack (see styles.css); each card describes what Billow just did for that person -->
+        <div class="hero__media" id="hero-carousel" role="region" aria-roledescription="carousel" aria-label="Billow customers">
+          <div class="hero__viewport">
+            <div class="hero__frame">
+              <img class="hero__slide" data-state="active" src="images/hero-1-1200.jpg" srcset="images/hero-1-700.jpg 700w, images/hero-1-1200.jpg 1200w" sizes="(min-width: 960px) 46vw, 100vw" width="896" height="1200" alt="A designer smiling at her laptop at a wooden desk in a bright studio" fetchpriority="high" style="--pos: 50% 30%">
+              <img class="hero__slide" data-state="next" src="images/hero-2-1200.jpg" srcset="images/hero-2-700.jpg 700w, images/hero-2-1200.jpg 1200w" sizes="(min-width: 960px) 46vw, 100vw" width="1200" height="1200" alt="A consultant checking his phone on a sofa at home" loading="lazy" decoding="async">
+              <img class="hero__slide" data-state="hidden-next" src="images/hero-3-1200.jpg" srcset="images/hero-3-700.jpg 700w, images/hero-3-1200.jpg 1200w" sizes="(min-width: 960px) 46vw, 100vw" width="1200" height="1200" alt="A photographer smiling at her phone on a stone street" loading="lazy" decoding="async">
+              <img class="hero__slide" data-state="prev" src="images/hero-4-1200.jpg" srcset="images/hero-4-700.jpg 700w, images/hero-4-1200.jpg 1200w" sizes="(min-width: 960px) 46vw, 100vw" width="1200" height="1200" alt="A studio owner reading her phone in her workshop" loading="lazy" decoding="async">
+            </div>
+          </div>
+
+          <div class="hero__card" aria-live="polite">
+            <div class="hero__card-item" data-state="active">
+              <span><b>Invoice sent</b>Studio Nord, £4,200 due 14 Nov</span>
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6"/><path d="M9 17h4"/></svg>
+            </div>
+            <div class="hero__card-item" data-state="next">
+              <span><b>Quote accepted</b>Kite and Co. approved £3,400</span>
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>
+            </div>
+            <div class="hero__card-item" data-state="hidden-next">
+              <span><b>£1,250 received</b>Paid by Apple Pay, books updated</span>
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10h18"/><path d="M5 6h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/></svg>
+            </div>
+            <div class="hero__card-item" data-state="prev">
+              <span><b>Reminder sent for you</b>A friendly nudge to Harbour Lane</span>
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg>
+            </div>
+          </div>
+
+          <div class="hero__dots" role="group" aria-label="Choose a slide">
+            <button type="button" aria-label="Slide 1 of 4" aria-current="true">01</button>
+            <button type="button" aria-label="Slide 2 of 4">02</button>
+            <button type="button" aria-label="Slide 3 of 4">03</button>
+            <button type="button" aria-label="Slide 4 of 4">04</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats (placeholder figures until real data is available).
+         Screen readers get the final value; the visible copy counts up (script.js). -->
+    <section class="stats" data-tone="white" aria-labelledby="stats-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="tagline"><svg class="tagline__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V11"/><path d="M10 20V5"/><path d="M16 20v-7"/><path d="M21 20H3"/></svg>By the numbers</p>
+          <h2 id="stats-title">Paid faster, with less admin</h2>
+          <p>What changes for freelancers and studios once Billow handles the follow-up.</p>
+        </div>
+        <div class="stats__grid" id="stats-grid">
+          <div><p class="stats__num"><span class="sr-only">11 days</span><span class="stats__count" aria-hidden="true">11 days</span></p><p class="stats__label">sooner, on average, that invoices get paid</p></div>
+          <div><p class="stats__num"><span class="sr-only">3 hours</span><span class="stats__count" aria-hidden="true">3 hours</span></p><p class="stats__label">of admin handed back every week</p></div>
+          <div><p class="stats__num"><span class="sr-only">98%</span><span class="stats__count" aria-hidden="true">98%</span></p><p class="stats__label">of invoices paid in full, with no chasing</p></div>
+          <div><p class="stats__num"><span class="sr-only">40,000+</span><span class="stats__count" aria-hidden="true">40,000+</span></p><p class="stats__label">freelancers and studios get paid with Billow</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How we do it: off-grid two columns. Left: tagline, heading, large photo.
+         Right: small photo, lead copy and a secondary button. -->
+    <section class="method" data-tone="sand" id="method" aria-labelledby="method-title">
+      <div class="wrap method__grid">
+        <div class="method__left">
+          <p class="tagline"><svg class="tagline__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></svg>How we do it</p>
+          <h2 class="method__title" id="method-title"><span>Most tools send invoices.</span> <span>Billow gets you paid.</span></h2>
+          <figure class="method__big">
+            <img src="images/method-cafe-1024.jpg" srcset="images/method-cafe-640.jpg 640w, images/method-cafe-1024.jpg 1024w" sizes="(min-width: 960px) 38vw, 100vw" width="1024" height="1024" alt="A freelancer writing in a notebook at a café window table, laptop open beside her" loading="lazy" decoding="async">
+          </figure>
+        </div>
+        <div class="method__right">
+          <figure class="method__small">
+            <img src="images/method-team-1200.jpg" srcset="images/method-team-700.jpg 700w, images/method-team-1200.jpg 1200w" sizes="(min-width: 960px) 26vw, 70vw" width="1200" height="805" alt="Two studio partners laughing over printed layouts at a shared desk" loading="lazy" decoding="async">
+          </figure>
+          <div class="method__copy">
+            <p>Most freelancers and studios lose hours every month to the work around getting paid. They copy figures from quotes into invoices, write awkward reminders and match payments by hand, because nothing connects the steps.</p>
+            <p>Billow does. Every quote becomes the invoice, every invoice carries its own way to pay, and every payment lands in your books already matched. You do the work, and Billow follows it all the way to paid.</p>
+            <a class="btn btn--secondary" href="#how">See how it works</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="how" data-tone="sand" id="how">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="tagline"><svg class="tagline__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2.5"/><circle cx="19" cy="12" r="2.5"/><path d="M7.5 12h9"/></svg>The process</p>
+          <h2>From quote to paid in four steps</h2>
+          <p>One document travels the whole way. Nothing to retype, nothing to reconcile by hand.</p>
+        </div>
+        <ol class="how__list" id="how-list">
+          <li class="how__item">
+            <p class="tagline how__step">Step 1</p>
+            <h3>Send a quote</h3>
+            <p>Pick a template, add your line items and send it. Your client approves it online.</p>
+            <!-- Animated UI: line items slide in, then Draft flips to Approved -->
+            <div class="ui ui--quote" aria-hidden="true">
+              <div class="ui__head"><b>Quote Q-0142</b><span class="ui__status"><span class="ui__chip ui__chip--draft">Draft</span><span class="ui__chip ui__chip--sand">Approved</span></span></div>
+              <div class="ui__line" style="--i:0"><span>Brand identity</span><span>£4,200</span></div>
+              <div class="ui__line" style="--i:1"><span>Website build</span><span>£6,800</span></div>
+              <div class="ui__line ui__line--total" style="--i:2"><span>Total</span><b>£11,000</b></div>
+            </div>
+          </li>
+          <li class="how__item">
+            <p class="tagline how__step">Step 2</p>
+            <h3>Turn it into an invoice</h3>
+            <p>One click converts the approved quote, deposits and all. Set it to go out on the day the work ships.</p>
+            <!-- Animated UI: switches flip on one by one, then Scheduled appears -->
+            <div class="ui ui--invoice" aria-hidden="true">
+              <div class="ui__head"><b>Invoice 0142</b><span class="ui__status"><span class="ui__chip ui__chip--lilac">Scheduled</span></span></div>
+              <div class="ui__toggle" style="--i:0"><i></i>Copy line items</div>
+              <div class="ui__toggle" style="--i:1"><i></i>Apply £2,000 deposit</div>
+              <div class="ui__toggle" style="--i:2"><i></i>Send when work ships</div>
+            </div>
+          </li>
+          <li class="how__item">
+            <p class="tagline how__step">Step 3</p>
+            <h3>Collect payment online</h3>
+            <p>Clients pay by card, bank transfer, Apple Pay or Google Pay straight from the invoice. Polite reminders go out for you.</p>
+            <!-- Animated UI: bank transfer is picked, the bar fills, then Paid appears -->
+            <div class="ui ui--pay" aria-hidden="true">
+              <div class="ui__head"><b>Pay £9,000</b><span class="ui__status"><span class="ui__chip ui__chip--blue">Paid</span></span></div>
+              <div class="ui__option"><i></i>Card</div>
+              <div class="ui__option ui__option--picked"><i></i>Bank transfer</div>
+              <div class="ui__option"><i></i>Apple Pay</div>
+              <div class="ui__bar"><span></span></div>
+            </div>
+          </li>
+          <li class="how__item">
+            <p class="tagline how__step">Step 4</p>
+            <h3>Keep the books in step</h3>
+            <p>Payments are matched and synced to Xero, QuickBooks or FreeAgent as they land. Your accountant will notice.</p>
+            <!-- Animated UI: each payment is ticked as matched, then Reconciled appears -->
+            <div class="ui ui--books" aria-hidden="true">
+              <div class="ui__head"><b>Synced to Xero</b><span class="ui__status"><span class="ui__chip ui__chip--aqua">Reconciled</span></span></div>
+              <div class="ui__ledger" style="--i:0"><span>Northfold Studio</span><span>£9,000</span><span class="ui__tick"><svg viewBox="0 0 24 24"><path d="m6 12.5 4 4 8-9"/></svg></span></div>
+              <div class="ui__ledger" style="--i:1"><span>Ruiz and Wren</span><span>£3,400</span><span class="ui__tick"><svg viewBox="0 0 24 24"><path d="m6 12.5 4 4 8-9"/></svg></span></div>
+              <div class="ui__ledger" style="--i:2"><span>Sato Photography</span><span>£1,250</span><span class="ui__tick"><svg viewBox="0 0 24 24"><path d="m6 12.5 4 4 8-9"/></svg></span></div>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Testimonials, modelled on intercom.com: company tabs over one white panel per
+         customer. Tabs rotate every 7.5s with a progress line on the active tab (script.js).
+         Placeholder quotes and names until real ones are collected. -->
+    <section class="stories" data-tone="sand" id="stories" aria-labelledby="stories-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="tagline"><svg class="tagline__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>Customer stories</p>
+          <h2 id="stories-title">Less chasing, more making</h2>
+        </div>
+        <div class="quotes" id="quotes">
+          <div class="quotes__tabs" role="tablist" aria-label="Customer stories">
+            <button class="quotes__tab" type="button" role="tab" id="quote-tab-northfold" aria-controls="quote-northfold" aria-selected="true" tabindex="0">Northfold Studio<span class="quotes__bar" aria-hidden="true"></span></button>
+            <button class="quotes__tab" type="button" role="tab" id="quote-tab-ruiz-wren" aria-controls="quote-ruiz-wren" aria-selected="false" tabindex="-1">Ruiz and Wren<span class="quotes__bar" aria-hidden="true"></span></button>
+            <button class="quotes__tab" type="button" role="tab" id="quote-tab-priya-nair" aria-controls="quote-priya-nair" aria-selected="false" tabindex="-1">Priya Nair Illustration<span class="quotes__bar" aria-hidden="true"></span></button>
+            <button class="quotes__tab" type="button" role="tab" id="quote-tab-sato" aria-controls="quote-sato" aria-selected="false" tabindex="-1">Sato Photography<span class="quotes__bar" aria-hidden="true"></span></button>
+            <button class="quotes__tab" type="button" role="tab" id="quote-tab-martins" aria-controls="quote-martins" aria-selected="false" tabindex="-1">Martins Brand Partners<span class="quotes__bar" aria-hidden="true"></span></button>
+          </div>
+          <div class="quotes__panels">
+            <article class="quotes__panel is-active" role="tabpanel" id="quote-northfold" aria-labelledby="quote-tab-northfold">
+              <p class="quotes__brand">Northfold Studio</p>
+              <figure class="quotes__body">
+                <blockquote><p><span class="quotes__open" aria-hidden="true">“</span>Quotes become invoices in one click and <mark>land in Xero already matched</mark>. Our accountant noticed before we did.”</p></blockquote>
+                <figcaption><b>Tom Becker</b>Founder, Northfold Studio</figcaption>
+              </figure>
+              <img class="quotes__photo" src="images/quote-tom-becker.jpg" width="478" height="640" alt="Tom Becker, smiling, in a grey sweater" loading="lazy" decoding="async">
+            </article>
+            <article class="quotes__panel" role="tabpanel" id="quote-ruiz-wren" aria-labelledby="quote-tab-ruiz-wren">
+              <p class="quotes__brand">Ruiz and Wren</p>
+              <figure class="quotes__body">
+                <blockquote><p><span class="quotes__open" aria-hidden="true">“</span>Clients pay straight from the invoice, so <mark>the money arrives days earlier</mark>. Cash flow stopped being a weekly worry.”</p></blockquote>
+                <figcaption><b>Ana Ruiz</b>Director, Ruiz and Wren</figcaption>
+              </figure>
+              <img class="quotes__photo" src="images/quote-ana-ruiz.jpg" width="478" height="640" alt="Ana Ruiz, with curly shoulder-length hair, in a dark top" loading="lazy" decoding="async">
+            </article>
+            <article class="quotes__panel" role="tabpanel" id="quote-priya-nair" aria-labelledby="quote-tab-priya-nair">
+              <p class="quotes__brand">Priya Nair Illustration</p>
+              <figure class="quotes__body">
+                <blockquote><p><span class="quotes__open" aria-hidden="true">“</span>I used to spend Friday afternoons writing polite nudges. Now <mark>I don’t think about invoices at all</mark>. They just get paid.”</p></blockquote>
+                <figcaption><b>Priya Nair</b>Freelance illustrator</figcaption>
+              </figure>
+              <img class="quotes__photo" src="images/quote-priya-nair.jpg" width="478" height="640" alt="Priya Nair, smiling, in a dark sweater" loading="lazy" decoding="async">
+            </article>
+            <article class="quotes__panel" role="tabpanel" id="quote-sato" aria-labelledby="quote-tab-sato">
+              <p class="quotes__brand">Sato Photography</p>
+              <figure class="quotes__body">
+                <blockquote><p><span class="quotes__open" aria-hidden="true">“</span>I bill clients in three currencies. Billow <mark>quotes in theirs and pays out in mine</mark>, and keeps every exchange rate for my accountant.”</p></blockquote>
+                <figcaption><b>Hana Sato</b>Photographer, Sato Photography</figcaption>
+              </figure>
+              <img class="quotes__photo" src="images/quote-hana-sato.jpg" width="478" height="640" alt="Hana Sato, smiling, with a short bob, in a dark shirt" loading="lazy" decoding="async">
+            </article>
+            <article class="quotes__panel" role="tabpanel" id="quote-martins" aria-labelledby="quote-tab-martins">
+              <p class="quotes__brand">Martins Brand Partners</p>
+              <figure class="quotes__body">
+                <blockquote><p><span class="quotes__open" aria-hidden="true">“</span>Retainers used to mean a spreadsheet and a calendar reminder. Now <mark>they invoice themselves on the first of the month</mark> and charge the saved card.”</p></blockquote>
+                <figcaption><b>Leo Martins</b>Brand consultant, Martins Brand Partners</figcaption>
+              </figure>
+              <img class="quotes__photo" src="images/quote-leo-martins.jpg" width="478" height="640" alt="Leo Martins, with curly hair and round glasses, in a dark sweater" loading="lazy" decoding="async">
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Statement -->
+    <section class="statement" data-tone="white" id="statement">
+      <div class="wrap statement__inner">
+        <p class="tagline statement__tag">Our vision</p>
+        <p class="statement__text" id="statement-text">Billow isn’t another accounting tool. It’s the simplest way for freelancers and small studios to get paid: quotes, invoices, payment links and friendly reminders in one calm place. Built by freelancers on one idea: the work is yours, the chasing shouldn’t be.</p>
+      </div>
+    </section>
+
+    <!-- Company: lined grid, no gaps (modelled on the reference). Row 1: company
+         story with facts, and a photo. Row 2: a customer case study over a
+         photo, and pricing. Placeholder facts, plans and quote. -->
+    <section class="company" data-tone="sand" id="company" aria-labelledby="company-title">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="tagline"><svg class="tagline__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8"/><path d="M18.5 14.5a6.5 6.5 0 0 1 3 5.5"/></svg>About Billow</p>
+          <h2 id="company-title">Built by freelancers, for freelancers</h2>
+          <p>Who we are, how customers use Billow, and what it costs.</p>
+        </div>
+        <div class="company__grid">
+          <article class="company__cell company__about">
+            <p class="tagline"><svg class="tagline__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v16"/><path d="M15 9h4a1 1 0 0 1 1 1v11"/><path d="M3 21h18"/><path d="M8 8h3"/><path d="M8 12h3"/><path d="M8 16h3"/></svg>Company</p>
+            <p class="company__lede">Billow started in 2021 inside a two-person design studio that was tired of chasing invoices. Today it handles quotes, invoices, payments and reconciliation for more than 40,000 freelancers, studios and small agencies, so their week goes on the work, not the admin.</p>
+            <a class="btn btn--dark" href="#">Read our story</a>
+            <dl class="company__facts">
+              <div><dt>Founded</dt><dd>2021, London</dd></div>
+              <div><dt>Customers</dt><dd>40,000+ freelancers and studios</dd></div>
+              <div><dt>Currencies</dt><dd>Paid out in 30+</dd></div>
+              <div><dt>Integrations</dt><dd>Xero, QuickBooks, FreeAgent</dd></div>
+            </dl>
+          </article>
+          <figure class="company__cell company__photo">
+            <img src="images/company-founder-1200.jpg" srcset="images/company-founder-700.jpg 700w, images/company-founder-1200.jpg 1200w" sizes="(min-width: 1040px) 40vw, 100vw" width="896" height="1200" alt="A studio founder in glasses and a mustard cardigan, smiling with a notebook in her studio" loading="lazy" decoding="async">
+          </figure>
+          <figure class="company__cell company__case">
+            <img src="images/case-filmmaker-1200.jpg" srcset="images/case-filmmaker-700.jpg 700w, images/case-filmmaker-1200.jpg 1200w" sizes="(min-width: 1040px) 40vw, 100vw" width="896" height="1200" alt="" loading="lazy" decoding="async">
+            <figcaption>
+              <blockquote>“I used to lose two days a month to invoicing. Now I quote from set and I’m paid before the edit’s done.”</blockquote>
+              <div class="company__who">
+                <p><b>Marcus Webb</b>Filmmaker, Webb Films</p>
+                <span class="company__chip"><i aria-hidden="true"></i>Billow customer</span>
+              </div>
+            </figcaption>
+          </figure>
+          <article class="company__cell company__pricing" id="pricing">
+            <p class="tagline"><svg class="tagline__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>Pricing</p>
+            <table class="plans">
+              <thead><tr><th scope="col">Plan</th><th scope="col">Price</th><th scope="col">Includes</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Starter</th><td>Free</td><td>3 invoices a month</td></tr>
+                <tr><th scope="row">Solo</th><td>£12 a month</td><td>Unlimited invoices and reminders</td></tr>
+                <tr><th scope="row">Studio</th><td>£29 a month</td><td>Up to 5 team members</td></tr>
+                <tr><th scope="row">Agency</th><td>£59 a month</td><td>Unlimited team, priority support</td></tr>
+              </tbody>
+            </table>
+            <a class="btn btn--dark" href="#">See all plans</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA: centred tagline, heading, paragraph and form, with six square
+         photos scattered around them (placement modelled on the reference).
+         The photos blur out and back in a staggered wave (script.js). -->
+    <section class="cta" data-tone="white" id="start" aria-labelledby="cta-title">
+      <div class="wrap cta__stage">
+        <div class="cta__photos" aria-hidden="true">
+          <div class="cta__slot" style="--l:13%; --t:4%; --w:156px"><img src="images/hero-1-700.jpg" data-srcs="images/hero-1-700.jpg|images/company-founder-700.jpg" alt="" decoding="async"></div>
+          <div class="cta__slot" style="--l:19%; --t:46%; --w:120px"><img src="images/method-team-700.jpg" data-srcs="images/method-team-700.jpg|images/hero-4-700.jpg" alt="" decoding="async"></div>
+          <div class="cta__slot" style="--l:4%; --t:70%; --w:182px"><img src="images/hero-3-700.jpg" data-srcs="images/hero-3-700.jpg|images/method-cafe-640.jpg" alt="" decoding="async"></div>
+          <div class="cta__slot" style="--l:78%; --t:10%; --w:150px"><img src="images/case-filmmaker-700.jpg" data-srcs="images/case-filmmaker-700.jpg|images/hero-1-700.jpg" alt="" decoding="async"></div>
+          <div class="cta__slot" style="--l:75%; --t:48%; --w:120px"><img src="images/hero-2-700.jpg" data-srcs="images/hero-2-700.jpg|images/method-team-700.jpg" alt="" decoding="async"></div>
+          <div class="cta__slot" style="--l:85%; --t:66%; --w:182px"><img src="images/company-founder-700.jpg" data-srcs="images/company-founder-700.jpg|images/hero-3-700.jpg" alt="" decoding="async"></div>
+        </div>
+        <div class="cta__content">
+          <p class="tagline"><svg class="tagline__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>Get started</p>
+          <h2 id="cta-title">Ready to stop chasing invoices?</h2>
+          <p class="cta__lede">Send your next invoice in five minutes. Your first 3 invoices each month are free.</p>
+          <div class="cta__actions">
+            <a class="btn btn--dark" href="#">Start free</a>
+            <a class="btn btn--secondary" href="#">Book a demo</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer, on sand: a large heading whose last word types itself and swaps
+       (script.js), a newsletter form, five link columns, then logo and
+       copyright. -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer__top">
+        <p class="footer__title"><span class="sr-only">Invoicing made calm. Built for freelancers, studios and agencies.</span><span aria-hidden="true">Invoicing made calm.<br>Built for <span class="footer__word" id="footer-word">freelancers</span></span></p>
+        <form class="signup footer__news" id="footer-form" novalidate data-ok="Subscribed. Look out for the next issue at {email}.">
+          <label class="footer__label" for="footer-email">Newsletter</label>
+          <div class="signup__field">
+            <input id="footer-email" type="email" name="email" placeholder="Email address" autocomplete="email" aria-describedby="footer-email-msg">
+            <button class="btn btn--dark" type="submit">Subscribe</button>
+          </div>
+          <p class="signup__msg" id="footer-email-msg" role="status"></p>
+        </form>
+      </div>
+      <div class="footer__cols">
+        <nav class="footer__col" aria-label="Product">
+          <p class="footer__label">Product</p>
+          <ul>
+            <li><a href="#">Quotes</a></li>
+            <li><a href="#">Invoices</a></li>
+            <li><a href="#">Payment links</a></li>
+            <li><a href="#">Reminders</a></li>
+          </ul>
+        </nav>
+        <nav class="footer__col" aria-label="For who">
+          <p class="footer__label">For who</p>
+          <ul>
+            <li><a href="#">Freelancers</a></li>
+            <li><a href="#">Design studios</a></li>
+            <li><a href="#">Agencies</a></li>
+            <li><a href="#">Consultants</a></li>
+            <li><a href="#">Photographers</a></li>
+          </ul>
+        </nav>
+        <nav class="footer__col" aria-label="Resources">
+          <p class="footer__label">Resources</p>
+          <ul>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#">Help centre</a></li>
+            <li><a href="#">Invoice templates</a></li>
+            <li><a href="#">Blog</a></li>
+          </ul>
+        </nav>
+        <nav class="footer__col" aria-label="Company">
+          <p class="footer__label">Company</p>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Privacy policy</a></li>
+            <li><a href="#">Terms</a></li>
+          </ul>
+        </nav>
+        <nav class="footer__col" aria-label="Social">
+          <p class="footer__label">Social</p>
+          <ul>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">LinkedIn</a></li>
+            <li><a href="#">X</a></li>
+            <li><a href="#">TikTok</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="footer__bottom">
+        <a class="logo logo--small" href="#" aria-label="Billow home">
+          <svg viewBox="0 0 28 28" width="22" height="22" aria-hidden="true"><rect width="28" height="28" rx="8" fill="#071A31"/><path d="M6 17c2.5-4 5.5-4 8 0s5.5 4 8 0" fill="none" stroke="#5DDFD7" stroke-width="2.4" stroke-linecap="round"/><path d="M6 11.5c2.5-4 5.5-4 8 0s5.5 4 8 0" fill="none" stroke="#B89FFA" stroke-width="2.4" stroke-linecap="round" opacity=".9"/></svg>
+          <span>billow</span>
+        </a>
+        <p class="footer__copy">© 2026 Billow</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

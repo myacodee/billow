@@ -1,0 +1,789 @@
+/* Billow — calm ledger */
+
+:root {
+  /* Brand palette */
+  --navy: #071A31;
+  --blue: #0B6BFF;
+  --sand: #E9E2D6;
+  --lilac: #B89FFA;
+  --aqua: #5DDFD7;
+
+  /* Softened working tones */
+  --page: #F7F5F1;
+  --surface: #FFFFFF;
+  --sand-soft: #F1ECE4;
+  --blue-soft: #E8F0FF;
+  --lilac-soft: #F1ECFE;
+  --aqua-soft: #E3F8F6;
+  --ink: #0E2440;
+  --ink-2: #44546A;
+  --ink-3: #6C7A8C;
+  --ink-faint: #A9B2BE;
+  --line: rgba(7, 26, 49, 0.09);
+  --line-strong: rgba(7, 26, 49, 0.16);
+  --blue-ink: #0757D1;
+
+  --radius: 0; /* every card, photo and tab: square corners */
+  --shadow-doc: 0 1px 2px rgba(7, 26, 49, 0.04), 0 12px 40px -12px rgba(7, 26, 49, 0.14);
+  --shadow-note: 0 1px 2px rgba(7, 26, 49, 0.05), 0 10px 24px -10px rgba(7, 26, 49, 0.2);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  --font: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --wrap: 90rem;
+  --section-y: 112px; /* top and bottom padding of every full section */
+  --gutter: 16px;
+}
+
+@media (min-width: 768px) { :root { --gutter: 32px; } }
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, p, ol, ul, figure, blockquote { margin: 0; }
+ol, ul { padding: 0; list-style: none; }
+a { color: inherit; }
+img, svg { display: block; }
+
+.wrap { width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+
+/* Sections are tagged with their background (data-tone="sand" | "white").
+   When two neighbours share a background, the second drops its top padding
+   and the hairline between them goes, so the gap isn't doubled. */
+[data-tone="sand"] + [data-tone="sand"],
+[data-tone="white"] + [data-tone="white"] { padding-top: 0; border-top: 0; }
+[data-tone="sand"]:has(+ [data-tone="sand"]),
+[data-tone="white"]:has(+ [data-tone="white"]) { border-bottom: 0; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.skip {
+  position: absolute; left: 16px; top: -48px; z-index: 100;
+  background: var(--navy); color: #fff; padding: 10px 16px; border-radius: 999px;
+  text-decoration: none; transition: top 0.2s var(--ease-out);
+}
+.skip:focus { top: 12px; }
+
+:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 6px; }
+
+/* Icons */
+.ico { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.ico--lg { width: 26px; height: 26px; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 48px; padding: 0 22px; border: 0; border-radius: 999px;
+  font: 500 16px/1 var(--font); text-decoration: none; cursor: pointer;
+  transition: background-color 0.2s var(--ease-out), transform 0.15s var(--ease-out);
+}
+.btn:active { transform: scale(0.97); }
+.btn--dark { background: var(--navy); color: #fff; }
+.btn--dark:hover { background: #17304F; }
+.btn--sm { min-height: 40px; padding: 0 18px; font-size: 15px; }
+.btn--secondary { background: transparent; color: var(--navy); box-shadow: inset 0 0 0 1px var(--navy); }
+.btn--secondary:hover { background: rgba(7, 26, 49, 0.06); }
+
+.link-quiet { text-decoration: none; color: var(--ink-2); font-size: 15px; padding: 10px 6px; transition: color 0.2s; }
+.link-quiet:hover { color: var(--ink); }
+
+/* Nav */
+/* The nav floats over the hero: transparent at the top of the page, frosted
+   sand with a hairline once the page scrolls (.is-scrolled, script.js). */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+.nav.is-scrolled {
+  background: rgba(247, 245, 241, 0.82);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom-color: var(--line);
+}
+.nav__inner { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 24px; }
+
+.logo { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-weight: 600; font-size: 20px; letter-spacing: -0.02em; color: var(--navy); }
+.logo--small { font-size: 17px; }
+
+.nav__links { display: none; gap: 30px; font-size: 15px; }
+.nav__links a { text-decoration: none; color: var(--ink-2); transition: color 0.2s; }
+.nav__links a:hover { color: var(--ink); }
+.nav__actions { display: flex; align-items: center; gap: 10px; }
+.nav__actions .link-quiet { display: none; }
+
+@media (min-width: 900px) {
+  .nav__links { display: flex; }
+  .nav__actions .link-quiet { display: inline; }
+}
+
+/* Hero: two columns, copy left, photo carousel right */
+/* The hero is a full screen tall and starts at the very top, under the 65px
+   nav (64px + hairline): the negative margin pulls it up behind the nav, and
+   the nav height is added back to the top padding so the content is centred
+   in the visible space below it. svh keeps it steady while phone address bars
+   show and hide (vh is the fallback). Taller content simply grows the hero. */
+.hero {
+  --nav-h: 65px;
+  display: flex; align-items: center;
+  min-height: 100vh; min-height: 100svh;
+  margin-top: calc(-1 * var(--nav-h));
+  background: var(--page); padding: calc(var(--nav-h) + 40px) 0 72px; overflow: hidden;
+}
+@media (min-width: 960px) { .hero { padding: calc(var(--nav-h) + 72px) 0 72px; } }
+
+.hero__grid { display: grid; gap: 56px; align-items: center; }
+@media (min-width: 960px) { .hero__grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 64px; } }
+
+.hero__copy { display: flex; flex-direction: column; align-items: flex-start; }
+
+
+.hero__title {
+  margin-top: 14px;
+  font-size: clamp(2.6rem, 5vw, 4rem);
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  font-weight: 500;
+  color: var(--navy);
+  max-width: 17ch;
+  text-wrap: balance;
+}
+.hero__title em { font-style: italic; letter-spacing: -0.02em; }
+
+.hero__lede { margin-top: 22px; max-width: 440px; color: var(--ink-3); font-size: 16px; text-wrap: pretty; }
+
+.hero__proof { margin-top: 28px; display: flex; align-items: center; gap: 12px; font-size: 15px; color: var(--ink-3); }
+.hero__proof b { color: var(--navy); font-weight: 500; }
+.hero__faces { display: flex; flex: none; }
+.hero__faces span {
+  width: 32px; height: 32px; border-radius: 50%; margin-left: -10px;
+  display: grid; place-items: center; background: var(--c); border: 2px solid var(--surface);
+  font-size: 11px; font-weight: 600; color: var(--navy);
+}
+.hero__faces span:first-child { margin-left: 0; }
+
+/* Photo carousel, modelled on isomeet.com's hero.
+   Photos slide sideways (600ms ease). The clipping viewport is one gutter wider
+   than the photo on each side, so a gap shows between outgoing and incoming photos.
+   Every slide and card carries a data-state set by script.js:
+   active | next | prev | hidden-next | hidden-prev. */
+.hero__media { position: relative; padding-bottom: 62px; }
+.hero__viewport { overflow: hidden; margin: 0 calc(-1 * var(--gutter)); padding: 0 var(--gutter); }
+.hero__frame { position: relative; aspect-ratio: 1 / 1; }
+.hero__slide {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: var(--pos, 50% 50%); border-radius: var(--radius);
+  transition: transform 0.6s ease;
+  will-change: transform;
+}
+.hero__slide[data-state="active"] { transform: translateX(0); }
+.hero__slide[data-state="next"],
+.hero__slide[data-state="hidden-next"] { transform: translateX(calc(100% + 2 * var(--gutter))); }
+.hero__slide[data-state="prev"],
+.hero__slide[data-state="hidden-prev"] { transform: translateX(calc(-100% - 2 * var(--gutter))); }
+
+/* Cards: a vertical 3D stack (500ms ease). The current card sinks back and
+   fades out while the next one rises from below and fades in. At rest only
+   the active card is visible. The stack sits 40px (60px on desktop) above
+   the photo's bottom edge. */
+.hero__card {
+  position: absolute; left: -12px; bottom: 102px; z-index: 2;
+  width: min(330px, 84%);
+  perspective: 1200px;
+}
+@media (min-width: 960px) { .hero__card { left: -56px; bottom: 122px; } }
+
+.hero__card-item {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  min-height: 76px; padding: 16px 20px; font-size: 14px; line-height: 1.35; color: var(--ink-3);
+  background: var(--surface); border-radius: var(--radius);
+  box-shadow: 0 1px 2px rgba(7, 26, 49, 0.06), 0 14px 32px -14px rgba(7, 26, 49, 0.22);
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+.hero__card-item[data-state="active"] { position: relative; z-index: 2; transform: translate3d(0, 0, 0); opacity: 1; }
+.hero__card-item[data-state="next"] { z-index: 1; transform: translate3d(0, 120%, -200px); opacity: 0; }
+.hero__card-item[data-state="hidden-next"] { transform: translate3d(0, 120%, -200px); opacity: 0; }
+.hero__card-item[data-state="prev"],
+.hero__card-item[data-state="hidden-prev"] { transform: translate3d(0, 0, -200px); opacity: 0; }
+
+/* Repositioning without animation (script.js toggles this for one frame) */
+.hero__media .no-anim { transition: none !important; }
+.hero__card-item b { display: block; color: var(--navy); font-weight: 500; font-size: 16px; margin-bottom: 2px; }
+.hero__card-item .ico { width: 24px; height: 24px; color: var(--ink-2); stroke-width: 1.5; }
+
+/* Numbered pagination: 01 02 03 04. A 64px track grows out after the active
+   number, and a blue fill runs along it for the slide's duration. The fill's
+   animationend advances the slide (script.js). */
+.hero__dots { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; align-items: center; gap: 20px; }
+.hero__dots button {
+  position: relative; display: inline-flex; align-items: center; height: 24px; padding: 0;
+  border: 0; background: none; cursor: pointer;
+  font: 500 14px/1 var(--font); font-variant-numeric: tabular-nums; letter-spacing: 0.02em;
+  color: var(--ink-faint); transition: color 0.2s;
+}
+.hero__dots button:hover { color: var(--ink-2); }
+.hero__dots button[aria-current="true"] { color: var(--navy); }
+/* Track: sits after the number (order: 2) and grows when the number is active */
+.hero__dots button::before {
+  content: ""; order: 2; width: 0; height: 2px; margin-left: 0; background: var(--line-strong);
+  transition: width 0.5s var(--ease-out), margin-left 0.5s var(--ease-out);
+}
+.hero__dots button[aria-current="true"]::before { width: 64px; margin-left: 14px; }
+/* Fill: laid over the track and revealed left to right with a clip */
+.hero__dots button::after {
+  content: ""; position: absolute; right: 0; top: 50%; width: 64px; height: 2px; margin-top: -1px;
+  background: var(--blue); clip-path: inset(0 100% 0 0); opacity: 0;
+}
+.hero__dots button[aria-current="true"]::after { opacity: 1; animation: dot-fill var(--slide-ms, 5000ms) linear forwards; }
+.hero__media.is-paused .hero__dots button[aria-current="true"]::after { animation-play-state: paused; }
+@keyframes dot-fill {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No autoplay: show the active bar full instead of filling */
+  .hero__dots button[aria-current="true"]::after { animation: none; clip-path: none; }
+}
+
+/* Sign-up form: grey pill field with the button inset on the right.
+   The field tint is translucent so it reads on white and on sand. */
+.signup { margin-top: 30px; width: 100%; max-width: 520px; }
+.signup__field {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px;
+  padding: 6px; background: var(--surface); border-radius: 999px;
+  transition: box-shadow 0.2s;
+}
+.signup__field:focus-within { box-shadow: 0 0 0 2px var(--blue); }
+.signup.is-invalid .signup__field { box-shadow: 0 0 0 2px #D9483B; }
+.signup input {
+  min-width: 0; border: 0; background: transparent; padding: 0 18px;
+  font: 400 16px var(--font); color: var(--ink); min-height: 48px;
+}
+.signup input::placeholder { color: var(--ink-3); }
+.signup input:focus { outline: none; }
+.signup .btn { min-height: 48px; padding: 0 26px; }
+.signup__msg { margin-top: 10px; padding: 0 24px; font-size: 14px; text-align: left; }
+.signup__msg:empty { display: none; }
+.signup__msg.is-error { color: #B42318; }
+.signup__msg.is-ok { color: #0B6E4F; }
+
+/* Tagline: small uppercase label above a section heading */
+.tagline {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; line-height: 1.4; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue);
+}
+/* Section taglines lead with a tiny line icon in the same colour */
+.tagline__icon { width: 14px; height: 14px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.section-head .tagline + h2 { margin-top: 14px; }
+
+/* The hero tagline is neutral rather than blue */
+.hero__kicker { color: var(--ink-2); }
+
+/* Section head */
+.section-head { max-width: 640px; margin-bottom: 7rem; }
+.section-head h2 {
+  font-size: clamp(2rem, 4.4vw, 3.375rem); line-height: 1.06; letter-spacing: -0.03em; font-weight: 500;
+  text-wrap: balance;
+}
+.section-head p:not(.tagline) { margin-top: 14px; color: var(--ink-2); font-size: 16px; text-wrap: pretty; }
+.section-head a { color: var(--blue-ink); text-underline-offset: 3px; }
+
+/* Stats */
+.stats { padding: var(--section-y) 0; background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+/* Stats form one lined grid (no gaps): the grid draws the top and left
+   hairlines and each cell its right and bottom, so every line is single
+   whatever the column count. Number at the top, label at the bottom, open
+   space between. One column on narrow phones so the numbers fit. */
+.stats__grid {
+  display: grid;
+  border-top: 1px solid var(--line-strong); border-left: 1px solid var(--line-strong);
+}
+@media (min-width: 560px) { .stats__grid { grid-template-columns: 1fr 1fr; } }
+.stats__grid > div {
+  display: flex; flex-direction: column; justify-content: space-between;
+  min-height: 220px; padding: 32px 24px;
+  border-right: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong);
+}
+@media (min-width: 960px) { .stats__grid > div { min-height: 280px; padding: 40px 32px; } }
+.stats__num { font-size: clamp(2.6rem, 5vw, 4rem); line-height: 1.06; letter-spacing: -0.035em; font-weight: 500; color: var(--navy); font-variant-numeric: tabular-nums; }
+.stats__label { margin-top: 16px; font-size: 15px; color: var(--ink-3); max-width: 22ch; }
+@media (min-width: 1280px) { .stats__grid { grid-template-columns: repeat(4, 1fr); } } /* four across once the numbers stop growing */
+
+/* Odometer: each digit is a window one line tall over a reel of 0–9.
+   script.js sets --stop (how many digits to travel), --delay and --roll;
+   adding .is-rolling to the grid slides every reel up into place. */
+.odo { display: inline-flex; align-items: flex-start; height: 1.1em; line-height: 1.1em; vertical-align: top; }
+.odo__still { white-space: pre; }
+.odo__cell {
+  display: inline-block; height: 1.1em; overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 10%, #000 90%, transparent);
+}
+.odo__reel {
+  display: flex; flex-direction: column;
+  transform: translateY(0);
+  transition: transform var(--roll, 1800ms) cubic-bezier(0.16, 1, 0.3, 1) var(--delay, 0ms);
+  will-change: transform;
+}
+.odo__reel > span { height: 1.1em; line-height: 1.1em; text-align: center; }
+.stats__grid.is-rolling .odo__reel { transform: translateY(calc(var(--stop) * -1.1em)); }
+
+/* How we do it: two off-grid columns on the page's sand background.
+   Left: tagline, heading, large portrait photo set well below the heading.
+   Right: small photo pinned to the right edge, then lead copy indented
+   from the column start, then a secondary button. */
+.method { padding: var(--section-y) 0; }
+.method__grid { display: grid; gap: 48px; }
+.method__title {
+  margin-top: 14px; max-width: 20ch;
+  font-size: clamp(2rem, 4.4vw, 3.375rem); line-height: 1.06; letter-spacing: -0.03em; font-weight: 500;
+  color: var(--navy);
+}
+.method__title span { display: block; }
+.method__big { margin-top: 3rem; }
+.method__big img { aspect-ratio: 4 / 5; object-position: 62% 50%; }
+.method__right { display: flex; flex-direction: column; }
+.method__small { align-self: flex-end; width: min(78%, 420px); }
+.method__small img { aspect-ratio: 3 / 2; }
+.method__copy { margin-top: 3rem; }
+/* Same paragraph style as the other sections (see .section-head p) */
+.method__copy p { font-size: 16px; color: var(--ink-2); max-width: 60ch; text-wrap: pretty; }
+.method__copy p + p { margin-top: 1em; }
+.method__copy .btn { margin-top: 3rem; }
+
+@media (min-width: 960px) {
+  .method__grid { grid-template-columns: 1fr 1fr; gap: 64px; }
+  .method__big { width: 82%; margin-top: 8rem; }
+  .method__small { width: 66%; }
+  /* Pushed to the bottom of the column so the button lines up with the
+     bottom of the large photo; padding-top keeps a gap under the small photo */
+  .method__copy { margin-top: auto; padding: 6rem 0 0 14%; }
+  .method__copy p { max-width: none; }
+}
+
+.method figure img { display: block; width: 100%; height: auto; object-fit: cover; border-radius: var(--radius); }
+
+/* Entrance: when the section comes into view (.is-in, script.js) the photos
+   fade in while scaling from 0.8 to 1. The small one goes first, growing down
+   from its top edge; the large one follows, growing up from its bottom edge.
+   Without script or with reduced motion they simply show. */
+.js .method figure { opacity: 0; scale: 0.8; transition: opacity 0.8s var(--ease-out), scale 1.2s var(--ease-out); }
+.js .method.is-in figure { opacity: 1; scale: 1; }
+.method__small { transform-origin: top center; }
+.method__big { transform-origin: bottom center; }
+.js .method.is-in .method__big { transition-delay: 0.35s; }
+
+/* How it works */
+/* Same lined grid as the stats, on sand: no gaps, the grid draws
+   the top and left hairlines and each cell its right and bottom. "Step 1"
+   label at the top with its title and text just below; mock-ups sit along the
+   bottom, so the open space falls between the text and the mock-up. On hover
+   (mouse only) the cell turns white and its label becomes a coloured chip. */
+.how { padding: var(--section-y) 0; }
+.how__list {
+  display: grid; position: relative;
+  border-top: 1px solid var(--line-strong); border-left: 1px solid var(--line-strong);
+}
+@media (min-width: 700px) { .how__list { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1040px) { .how__list { grid-template-columns: repeat(4, 1fr); } }
+
+.how__item {
+  position: relative; display: flex; flex-direction: column;
+  min-height: 300px; padding: 32px 24px;
+  border-right: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong);
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@media (min-width: 960px) { .how__item { min-height: 440px; padding: 40px 32px; } }
+/* Each step's chip colours, matching the status chip in its UI */
+.how__item:nth-child(1) { --chip-bg: var(--sand-soft); --chip-fg: #6B5A3E; } /* Approved */
+.how__item:nth-child(2) { --chip-bg: var(--lilac-soft); --chip-fg: #5B3FB8; } /* Scheduled */
+.how__item:nth-child(3) { --chip-bg: var(--blue-soft); --chip-fg: var(--blue-ink); } /* Paid */
+.how__item:nth-child(4) { --chip-bg: var(--aqua-soft); --chip-fg: #0B6E66; } /* Reconciled */
+@media (hover: hover) {
+  .how__item:hover { background: var(--surface); }
+}
+/* "Step 1" label: tagline style (see .tagline) in navy. On hover it becomes a
+   chip in the step's colours. The chip padding is always there and offset
+   with a negative margin, so the text stays aligned and nothing shifts. */
+.how__step {
+  align-self: flex-start; margin-left: -10px; padding: 4px 10px; border-radius: 999px;
+  color: var(--navy); background: transparent;
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.how__item h3 { margin-top: 24px; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+.how__item p:not(.how__step) { margin-top: 8px; margin-bottom: 48px; font-size: 16px; color: var(--ink-2); }
+
+/* Process cell UIs. Each is drawn in its finished state; the keyframes start
+   from the "before" state (fill-mode backwards), so with no animation the
+   finished UI shows. Animations run while the cell has .is-playing (added on
+   scroll-in and on hover by script.js). --pop is when the status chip lands. */
+.ui {
+  --pop: 1s;
+  margin-top: auto; padding: 14px 14px 12px; display: grid; gap: 8px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  font-size: 12px; color: var(--ink-2);
+}
+.ui__head { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding-bottom: 9px; border-bottom: 1px solid var(--line); }
+.ui__head b { font-size: 13px; font-weight: 600; color: var(--navy); }
+.ui__status { display: grid; }
+.ui__status > * { grid-area: 1 / 1; justify-self: end; }
+.ui__chip { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.ui__chip--draft { background: var(--page); color: var(--ink-3); opacity: 0; }
+.ui__chip--sand { background: var(--sand-soft); color: #6B5A3E; }
+.ui__chip--lilac { background: var(--lilac-soft); color: #5B3FB8; }
+.ui__chip--blue { background: var(--blue-soft); color: var(--blue-ink); }
+.ui__chip--aqua { background: var(--aqua-soft); color: #0B6E66; }
+
+/* 1 Quote: line items */
+.ui__line { display: flex; justify-content: space-between; gap: 12px; }
+.ui__line > :last-child { color: var(--ink); font-variant-numeric: tabular-nums; }
+.ui__line--total { padding-top: 7px; border-top: 1px dashed var(--line-strong); color: var(--navy); }
+.ui__line--total b { font-weight: 600; }
+
+/* 2 Invoice: switches */
+.ui--invoice { --pop: 1.05s; }
+.ui__toggle { display: flex; align-items: center; gap: 9px; color: var(--ink); }
+.ui__toggle i { position: relative; flex: none; width: 24px; height: 14px; border-radius: 999px; background: var(--navy); }
+.ui__toggle i::after {
+  content: ""; position: absolute; top: 2px; left: 2px; width: 10px; height: 10px;
+  border-radius: 50%; background: #fff; translate: 10px 0;
+}
+
+/* 3 Pay: options and progress bar */
+.ui--pay { --pop: 1.5s; }
+.ui__option { display: flex; align-items: center; gap: 9px; padding: 4px 8px; margin: 0 -8px; color: var(--ink); }
+.ui__option i { flex: none; width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid var(--line-strong); }
+.ui__option--picked { background: var(--blue-soft); }
+.ui__option--picked i { border-color: var(--blue); background: var(--blue); box-shadow: inset 0 0 0 2px var(--blue-soft); }
+.ui__bar { height: 4px; margin-top: 2px; background: var(--page); overflow: hidden; }
+.ui__bar span { display: block; height: 100%; background: var(--blue); transform-origin: left center; }
+
+/* 4 Books: ledger rows with ticks */
+.ui--books { --pop: 1.2s; }
+.ui__ledger { display: grid; grid-template-columns: 1fr auto 14px; align-items: center; gap: 10px; color: var(--ink); }
+.ui__ledger > :nth-child(2) { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.ui__tick { display: grid; place-items: center; width: 14px; height: 14px; border-radius: 50%; background: var(--aqua); }
+.ui__tick svg { width: 10px; height: 10px; fill: none; stroke: var(--navy); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Animations */
+.is-playing .ui__line { animation: ui-rise 0.45s var(--ease-out) backwards; animation-delay: calc(var(--i) * 0.18s); }
+.is-playing .ui__chip--draft { animation: ui-out 0.25s ease backwards 0.85s; }
+.is-playing .ui__status > :not(.ui__chip--draft) { animation: ui-pop 0.4s var(--ease-spring) backwards var(--pop); }
+.is-playing .ui__toggle i { animation: ui-track 0.3s ease backwards; animation-delay: calc(0.2s + var(--i) * 0.25s); }
+.is-playing .ui__toggle i::after { animation: ui-knob 0.3s var(--ease-out) backwards; animation-delay: calc(0.2s + var(--i) * 0.25s); }
+.is-playing .ui__option--picked { animation: ui-pick 0.3s ease backwards 0.3s; }
+.is-playing .ui__option--picked i { animation: ui-radio 0.3s ease backwards 0.3s; }
+.is-playing .ui__bar span { animation: ui-fill 0.9s var(--ease-out) backwards 0.6s; }
+.is-playing .ui__tick { animation: ui-tick 0.35s var(--ease-spring) backwards; animation-delay: calc(0.3s + var(--i) * 0.25s); }
+.is-playing .ui__tick svg { animation: ui-fade 0.2s ease backwards; animation-delay: calc(0.4s + var(--i) * 0.25s); }
+
+@keyframes ui-rise { from { opacity: 0; translate: 0 6px; } }
+@keyframes ui-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes ui-pop { from { opacity: 0; scale: 0.7; } }
+@keyframes ui-track { from { background: var(--line-strong); } }
+@keyframes ui-knob { from { translate: 0 0; } }
+@keyframes ui-pick { from { background: transparent; } }
+@keyframes ui-radio { from { background: transparent; border-color: var(--line-strong); box-shadow: none; } }
+@keyframes ui-fill { from { scale: 0 1; } }
+@keyframes ui-tick { from { background: var(--line); scale: 0.6; } }
+@keyframes ui-fade { from { opacity: 0; } }
+
+/* Steps light up in order once the section is in view. The rise is a
+   keyframe animation on the separate `translate` property, so its stagger
+   delay never slows the hover transition. */
+.how__item:nth-child(2) { --d: 0.12s; }
+.how__item:nth-child(3) { --d: 0.24s; }
+.how__item:nth-child(4) { --d: 0.36s; }
+.js .how__item { opacity: 0; translate: 0 14px; }
+.js .how__list.is-in .how__item { animation: step-in 0.7s var(--ease-out) var(--d, 0s) both; }
+@keyframes step-in { to { opacity: 1; translate: 0 0; } }
+@media (hover: hover) {
+  .how__item:hover .how__step { color: var(--chip-fg); background: var(--chip-bg); }
+}
+
+/* Statement: letters fill in as you scroll */
+/* At least 80% of the screen tall, text centred vertically. svh keeps it
+   steady while phone address bars show and hide (vh is the fallback). */
+.statement {
+  display: flex; align-items: center;
+  min-height: 80vh; min-height: 80svh;
+  padding: var(--section-y) 0;
+  background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+}
+/* Large full-width statement. On desktop the first line is indented and the
+   tagline sits in that space, centred on the first line; on phones the
+   tagline sits above and there is no indent. */
+.statement__inner { --fs: clamp(1.8rem, 4.4vw, 3.3rem); position: relative; }
+.statement__tag { margin-bottom: 20px; color: var(--ink-2); } /* neutral, no icon */
+.statement__text {
+  font-size: var(--fs); line-height: 1.12; letter-spacing: -0.035em; font-weight: 500;
+  color: var(--navy); text-wrap: pretty;
+}
+@media (min-width: 960px) {
+  .statement__tag { position: absolute; left: var(--gutter); top: calc(var(--fs) * 0.56 - 8.4px); margin: 0; }
+  .statement__text { text-indent: 25%; }
+}
+/* Scroll fill, letter by letter. Words are wrapped so lines never break
+   mid-word; screen readers get the plain sentence (script.js). */
+.statement__text .wd { white-space: nowrap; }
+.js .statement__text .c { color: var(--ink-faint); opacity: 0.55; transition: color 0.25s, opacity 0.25s; }
+.js .statement__text .c.is-on { color: var(--navy); opacity: 1; }
+
+/* Testimonials, modelled on intercom.com: a row of company tabs over a white
+   panel per customer, on the page's sand background. Inactive tabs are
+   half-transparent white; the active tab is solid white and joins the panel
+   (no bottom line). Square corners, hairlines around the row, between tabs
+   and around the panel; labels left-aligned. A 2px blue line fills across the
+   active tab's top border as the 7.5s timer; its animationend moves to the
+   next tab (script.js). */
+.stories { padding: var(--section-y) 0; }
+
+.quotes__tabs {
+  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(168px, 1fr);
+  overflow-x: auto; scrollbar-width: none;
+  border: 1px solid var(--line-strong); border-bottom: 0;
+}
+.quotes__tabs::-webkit-scrollbar { display: none; }
+.quotes__tab {
+  position: relative; min-height: 52px; padding: 10px 18px;
+  border: 0; border-bottom: 1px solid var(--line-strong); background: rgba(255, 255, 255, 0.5); cursor: pointer;
+  font: 500 13px/1.35 var(--font); letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-3); text-align: left; text-wrap: pretty; /* long names wrap to two lines when tight */
+  transition: color 0.2s, background-color 0.2s;
+}
+.quotes__tab + .quotes__tab { border-left: 1px solid var(--line-strong); }
+.quotes__tab:hover { color: var(--ink-2); }
+.quotes__tab[aria-selected="true"] { color: var(--navy); background: var(--surface); border-bottom-color: transparent; }
+.quotes__tab:focus-visible { outline-offset: -3px; }
+.quotes__bar {
+  position: absolute; left: 0; right: 0; top: -1px; height: 2px;
+  background: var(--blue); transform: scaleX(0); transform-origin: left center;
+}
+.quotes__tab[aria-selected="true"] .quotes__bar { animation: quote-fill var(--quote-ms, 7500ms) linear forwards; }
+.quotes.is-paused .quotes__tab[aria-selected="true"] .quotes__bar { animation-play-state: paused; }
+@keyframes quote-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* Panels share one grid cell, so the box keeps the tallest one's height and
+   switching tabs is a crossfade. */
+.quotes__panels {
+  display: grid;
+  background: var(--surface); border: 1px solid var(--line-strong); border-top: 0;
+}
+.quotes__panel {
+  grid-area: 1 / 1; display: grid; gap: 28px; padding: 40px 24px 32px;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0s 0.5s;
+}
+.quotes__panel.is-active { opacity: 1; visibility: visible; transition: opacity 0.5s ease; }
+
+.quotes__brand { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; color: var(--navy); }
+.quotes__body { display: flex; flex-direction: column; }
+.quotes__body blockquote p {
+  position: relative; max-width: 32ch;
+  font-size: clamp(22px, 2.1vw, 30px); line-height: 1.28; letter-spacing: -0.015em; font-weight: 400;
+  color: var(--navy); text-wrap: pretty;
+}
+/* Hanging opening quote, so the text block's left edge stays straight */
+.quotes__open { position: absolute; left: 0; transform: translateX(-100%); padding-right: 0.08em; }
+.quotes__body mark {
+  background: var(--blue); color: #fff; padding: 0 0.1em;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+.quotes__body figcaption { margin-top: 32px; font-size: 15px; color: var(--ink-3); }
+.quotes__body figcaption b { display: block; font-size: 16px; font-weight: 500; color: var(--navy); }
+.quotes__photo { width: 140px; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 20%; border-radius: var(--radius); }
+
+@media (min-width: 960px) {
+  /* Company name and quote share the left column: name at the top, quote
+     anchored to the bottom, so the space between them grows with the panel.
+     Square photo on the right. */
+  .quotes__panel {
+    grid-template-columns: minmax(0, 1fr) 280px; grid-template-rows: auto 1fr;
+    gap: 64px 80px; padding: 48px 48px 48px 64px; min-height: 440px;
+  }
+  .quotes__brand { grid-column: 1; grid-row: 1; }
+  .quotes__body { grid-column: 1; grid-row: 2; align-self: end; }
+  .quotes__body figcaption { margin-top: 40px; }
+  .quotes__photo { grid-column: 2; grid-row: 1 / 3; width: 100%; align-self: center; }
+}
+
+/* Company: lined grid with no gaps, like the stats (the grid draws the top
+   and left hairlines, each cell its right and bottom). Desktop uses 12
+   columns: company story (7) + photo (5), then case study (5) + pricing (7),
+   so the rows stagger. Stacks to one column below 1040px. */
+.company { padding: var(--section-y) 0; }
+.company__grid { display: grid; border-top: 1px solid var(--line-strong); border-left: 1px solid var(--line-strong); }
+.company__cell {
+  position: relative; margin: 0;
+  border-right: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong);
+}
+@media (min-width: 1040px) {
+  .company__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  .company__about { grid-column: 1 / 8; }
+  .company__photo { grid-column: 8 / 13; }
+  .company__case { grid-column: 1 / 6; }
+  .company__pricing { grid-column: 6 / 13; }
+}
+
+/* Company story */
+.company__about { display: flex; flex-direction: column; align-items: flex-start; padding: 32px 24px; }
+.company__lede { margin-top: 20px; max-width: 60ch; color: var(--ink); }
+.company__about .btn { margin-top: 28px; }
+.company__facts {
+  align-self: stretch; margin: auto 0 0; padding-top: 48px;
+  display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px;
+}
+.company__facts div { padding: 14px 0; border-top: 1px solid var(--line-strong); }
+.company__facts dt { font-size: 13px; color: var(--ink-3); }
+.company__facts dd { margin: 2px 0 0; font-size: 15px; font-weight: 500; color: var(--navy); }
+
+/* Photo fills its cell */
+.company__photo { min-height: 360px; overflow: hidden; }
+.company__photo img, .company__case img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.company__photo img { object-position: 50% 30%; }
+
+/* Case study: quote over the photo, on a dark fade */
+.company__case { min-height: 460px; overflow: hidden; color: #fff; }
+.company__case img { object-position: 50% 25%; }
+.company__case::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(7, 26, 49, 0) 30%, rgba(7, 26, 49, 0.88) 100%);
+}
+.company__case figcaption { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; padding: 28px 24px; }
+.company__case blockquote { font-size: clamp(22px, 2vw, 28px); line-height: 1.25; letter-spacing: -0.015em; font-weight: 500; text-wrap: pretty; }
+.company__who { margin-top: 20px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px; }
+.company__who p { font-size: 14px; color: rgba(255, 255, 255, 0.75); }
+.company__who b { display: block; font-size: 16px; font-weight: 500; color: #fff; }
+.company__chip {
+  display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 999px;
+  background: rgba(7, 26, 49, 0.75); border: 1px solid rgba(255, 255, 255, 0.18);
+  font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.company__chip i { width: 8px; height: 8px; border-radius: 50%; background: var(--aqua); }
+
+/* Pricing */
+.company__pricing { display: flex; flex-direction: column; align-items: flex-start; padding: 32px 24px; }
+.plans { width: 100%; margin-top: 24px; border-collapse: collapse; text-align: left; }
+.plans th, .plans td { padding: 16px 12px 16px 0; border-bottom: 1px solid var(--line-strong); vertical-align: top; }
+.plans thead th { padding-top: 0; padding-bottom: 12px; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.plans tbody th { font-weight: 500; color: var(--navy); }
+.plans td { color: var(--ink-2); }
+.company__pricing .btn { margin-top: 28px; }
+
+@media (min-width: 960px) {
+  .company__about, .company__pricing { padding: 40px; }
+  .company__case figcaption { padding: 36px 40px; }
+  .company__case { min-height: 520px; }
+}
+
+/* CTA: centred tagline, heading, paragraph and form, with six square photos
+   scattered around them on wide screens. script.js cycles the photos: each
+   slot blurs out (.is-out) in a staggered wave, swaps its photo and blurs
+   back in. The photos are hidden below 960px. */
+.cta { padding: var(--section-y) 0; background: var(--surface); border-top: 1px solid var(--line); }
+.cta__stage { position: relative; }
+.cta__content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.cta__content h2 {
+  margin-top: 14px; max-width: 16ch;
+  font-size: clamp(2rem, 4.4vw, 3.375rem); line-height: 1.06; letter-spacing: -0.03em; font-weight: 500;
+  color: var(--navy); text-wrap: balance;
+}
+.cta__lede { margin-top: 16px; max-width: 44ch; color: var(--ink-2); }
+.cta__actions { margin-top: 32px; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.cta__photos { display: none; }
+@media (min-width: 960px) {
+  .cta__stage { display: grid; place-items: center; min-height: 600px; }
+  .cta__photos { display: block; position: absolute; inset: 0; pointer-events: none; }
+}
+.cta__slot {
+  position: absolute; left: var(--l); top: var(--t); width: var(--w); aspect-ratio: 1 / 1; overflow: hidden;
+  transition: opacity 0.7s ease, filter 0.7s ease, scale 0.7s ease;
+}
+.cta__slot.is-out { opacity: 0; filter: blur(15px); scale: 0.85; }
+.cta__slot img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Footer on sand: large heading (last word types and swaps, script.js) and
+   the newsletter form side by side, then five link columns, then logo and
+   copyright. */
+.footer { padding: var(--section-y) 0 40px; border-top: 1px solid var(--line); }
+.footer__top { display: grid; gap: 48px; }
+@media (min-width: 960px) { .footer__top { grid-template-columns: 1fr 1fr; align-items: start; gap: 64px; } }
+.footer__title {
+  font-size: clamp(2.6rem, 5vw, 4rem); line-height: 1.05; letter-spacing: -0.045em; font-weight: 500;
+  color: var(--navy);
+}
+/* Typing caret after the swapping word */
+.footer__word { position: relative; }
+/* Below 960px the word always gets its own line, so the heading height never jumps as words swap */
+@media (max-width: 959px) { .footer__word { display: block; } }
+.footer__word::after {
+  content: ""; display: inline-block; width: 3px; height: 0.8em; margin-left: 4px; vertical-align: -0.04em;
+  background: var(--blue); animation: caret 1s steps(1) infinite;
+}
+@keyframes caret { 50% { opacity: 0; } }
+.footer__label { display: block; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+.footer__news { margin-top: 0; } /* same 520px max width as the hero form (.signup) */
+.footer__news .footer__label { margin-bottom: 16px; }
+@media (min-width: 960px) { .footer__news { padding-top: 12px; } }
+
+.footer__cols { margin-top: 96px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px 24px; }
+@media (min-width: 900px) { .footer__cols { grid-template-columns: repeat(5, 1fr); } }
+.footer__col ul { margin-top: 20px; display: grid; gap: 6px; }
+.footer__col a {
+  font-size: 18px; letter-spacing: -0.015em; color: var(--navy); text-decoration: none;
+  transition: color 0.2s;
+}
+.footer__col a:hover { color: var(--blue-ink); }
+
+.footer__bottom {
+  margin-top: 96px; padding-top: 24px; border-top: 1px solid var(--line);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;
+}
+.footer__copy { font-size: 14px; color: var(--ink-3); }
+
+/* Hero entrance: one orchestrated moment on load */
+@media (prefers-reduced-motion: no-preference) {
+  .js .hero__kicker, .js .hero__title, .js .hero__lede, .js .hero__copy .signup, .js .hero__proof {
+    animation: rise 0.9s var(--ease-out) both;
+  }
+  .js .hero__title { animation-delay: 0.08s; }
+  .js .hero__lede { animation-delay: 0.2s; }
+  .js .hero__copy .signup { animation-delay: 0.3s; }
+  .js .hero__proof { animation-delay: 0.38s; }
+  .js .hero__frame { animation: reveal 1.2s var(--ease-out) 0.15s both; }
+  .js .hero__card { animation: rise 0.9s var(--ease-out) 0.7s both; }
+}
+@keyframes reveal {
+  from { clip-path: inset(8% 8% 8% 8%); opacity: 0; }
+  to { clip-path: inset(0 0 0 0); opacity: 1; }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; transition-delay: 0s !important; }
+  .js .how__item { opacity: 1; translate: none; }
+}
