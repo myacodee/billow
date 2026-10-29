@@ -552,7 +552,7 @@ img, svg { display: block; }
 
 /* Testimonials, modelled on intercom.com: a row of company tabs over a white
    panel per customer, on the page's sand background. Inactive tabs are
-   half-transparent white; the active tab is solid white and joins the panel
+   transparent (sand shows through); the active tab is solid white and joins the panel
    (no bottom line). Square corners, hairlines around the row, between tabs
    and around the panel; labels left-aligned. A 2px blue line fills across the
    active tab's top border as the 7.5s timer; its animationend moves to the
@@ -567,7 +567,7 @@ img, svg { display: block; }
 .quotes__tabs::-webkit-scrollbar { display: none; }
 .quotes__tab {
   position: relative; min-height: 52px; padding: 10px 18px;
-  border: 0; border-bottom: 1px solid var(--line-strong); background: rgba(255, 255, 255, 0.5); cursor: pointer;
+  border: 0; border-bottom: 1px solid var(--line-strong); background: transparent; cursor: pointer;
   font: 500 13px/1.35 var(--font); letter-spacing: 0.08em; text-transform: uppercase;
   color: var(--ink-3); text-align: left; text-wrap: pretty; /* long names wrap to two lines when tight */
   transition: color 0.2s, background-color 0.2s;
