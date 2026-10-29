@@ -30,4 +30,6 @@ Several things are placeholders:
 - Buttons and most footer links point to `#`.
 - The sign-up and newsletter forms only validate the email; they aren't connected to a backend.
 
+After changing `styles.css` or `script.js`, bump the `?v=` number on their tags in `index.html` so visitors don't get a cached copy.
+
 All animations respect the visitor's reduced-motion setting.
