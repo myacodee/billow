@@ -16,6 +16,91 @@
   window.addEventListener("scroll", onScrollNav, { passive: true });
   onScrollNav();
 
+  // Nav dropdowns (desktop): hover or click a trigger to open the shared
+  // panel; panes before the active one wait to the left, later ones to the
+  // right, so moving across the triggers slides the content that way.
+  var navMenu = document.getElementById("nav-menu");
+  var navTriggers = [].slice.call(navMenu.querySelectorAll("button.nav__trigger"));
+  var navPanes = [].slice.call(navMenu.querySelectorAll(".nav__pane"));
+  var navBurger = nav.querySelector(".nav__burger");
+  var desktopNav = window.matchMedia("(min-width: 1024px)");
+  var openPane = -1;
+
+  var setPane = function (i) {
+    navPanes.forEach(function (pane, k) {
+      pane.classList.toggle("is-active", k === i);
+      pane.classList.toggle("is-before", k < i);
+    });
+  };
+  var openMenu = function (i) {
+    setPane(i);
+    navTriggers.forEach(function (t, k) { t.setAttribute("aria-expanded", String(k === i)); });
+    nav.classList.add("is-open");
+    openPane = i;
+  };
+  var closeMenu = function () {
+    if (openPane < 0) return;
+    navTriggers.forEach(function (t) { t.setAttribute("aria-expanded", "false"); });
+    nav.classList.remove("is-open");
+    openPane = -1;
+  };
+  var paneLinks = function (i) { return [].slice.call(navPanes[i].querySelectorAll("a")); };
+  setPane(0);
+
+  navTriggers.forEach(function (trigger, i) {
+    trigger.addEventListener("mouseenter", function () { if (desktopNav.matches) openMenu(i); });
+    trigger.addEventListener("click", function (e) {
+      // A mouse click never closes what hovering just opened; Enter and Space toggle
+      if (openPane === i && e.detail === 0) closeMenu(); else openMenu(i);
+    });
+    trigger.addEventListener("keydown", function (e) {
+      if (openPane !== i) return;
+      if (e.key === "ArrowDown" || (e.key === "Tab" && !e.shiftKey)) {
+        e.preventDefault();
+        paneLinks(i)[0].focus();
+      }
+    });
+  });
+  navPanes.forEach(function (pane, i) {
+    pane.addEventListener("keydown", function (e) {
+      var links = paneLinks(i), at = links.indexOf(document.activeElement);
+      if (e.key === "Tab" && e.shiftKey && at === 0) {
+        e.preventDefault();
+        navTriggers[i].focus();
+      } else if (e.key === "Tab" && !e.shiftKey && at === links.length - 1) {
+        e.preventDefault();
+        closeMenu();
+        (navTriggers[i + 1] || navMenu.querySelector("a.nav__trigger")).focus();
+      }
+    });
+  });
+  navMenu.querySelector("a.nav__trigger").addEventListener("mouseenter", closeMenu);
+  navMenu.addEventListener("mouseleave", function () { if (desktopNav.matches) closeMenu(); });
+  navMenu.addEventListener("focusout", function (e) {
+    if (desktopNav.matches && !navMenu.contains(e.relatedTarget)) closeMenu();
+  });
+  document.addEventListener("click", function (e) { if (!navMenu.contains(e.target)) closeMenu(); });
+
+  // Phone menu: the burger drops the whole menu down under the bar
+  var setMobileMenu = function (open) {
+    nav.classList.toggle("is-menu-open", open);
+    navBurger.setAttribute("aria-expanded", String(open));
+    navBurger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  };
+  navBurger.addEventListener("click", function () { setMobileMenu(!nav.classList.contains("is-menu-open")); });
+  navMenu.addEventListener("click", function (e) { if (e.target.closest("a")) { setMobileMenu(false); closeMenu(); } });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape") return;
+    if (openPane >= 0) {
+      var trigger = navTriggers[openPane];
+      closeMenu();
+      if (navMenu.contains(document.activeElement)) trigger.focus();
+    }
+    if (nav.classList.contains("is-menu-open")) { setMobileMenu(false); navBurger.focus(); }
+  });
+  desktopNav.addEventListener("change", function () { closeMenu(); setMobileMenu(false); });
+
   // Hero photo carousel: slides, matching card and dots move together
   var carousel = document.getElementById("hero-carousel");
   var slides = carousel.querySelectorAll(".hero__slide");

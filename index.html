@@ -19,17 +19,81 @@
   <header class="nav" id="nav">
     <div class="wrap nav__inner">
       <a class="logo" href="#" aria-label="Billow home">
-        <svg viewBox="0 0 28 28" width="26" height="26" aria-hidden="true"><rect width="28" height="28" rx="8" fill="#071A31"/><path d="M6 17c2.5-4 5.5-4 8 0s5.5 4 8 0" fill="none" stroke="#5DDFD7" stroke-width="2.4" stroke-linecap="round"/><path d="M6 11.5c2.5-4 5.5-4 8 0s5.5 4 8 0" fill="none" stroke="#B89FFA" stroke-width="2.4" stroke-linecap="round" opacity=".9"/></svg>
-        <span>billow</span>
+        <img src="images/logo.svg" alt="" width="122" height="24">
       </a>
-      <nav class="nav__links" aria-label="Main">
-        <a href="#how">How it works</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#stories">Customers</a>
+      <nav class="nav__menu" id="nav-menu" aria-label="Main">
+        <div class="nav__triggers">
+          <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="nav-pane-0">Product<svg class="nav__chev" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="nav-pane-1">Solutions<svg class="nav__chev" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="nav-pane-2">Resources<svg class="nav__chev" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="nav-pane-3">Company<svg class="nav__chev" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <a class="nav__trigger" href="#pricing">Pricing</a>
+        </div>
+        <!-- One shared panel: its height morphs between panes and the panes
+             slide sideways towards the trigger you move to (script.js). -->
+        <div class="nav__panel">
+          <div class="nav__surface">
+            <div class="nav__pane" id="nav-pane-0" data-pane="0">
+              <div class="nav__clip"><div class="nav__body">
+                <p class="nav__title">Product</p>
+                <div class="nav__grid">
+                  <a class="nav__card nav__card--feature" href="#how">
+                    <span class="nav__card-title">How Billow works</span>
+                    <span class="nav__card-desc">Quote, invoice and get paid in one calm place</span>
+                    <img src="images/method-cafe-640.jpg" alt="" width="640" height="480" loading="lazy">
+                  </a>
+                  <div class="nav__stack">
+                    <a class="nav__card" href="#"><span class="nav__card-title">Quotes</span><span class="nav__card-desc">Send a quote clients can accept in one click</span></a>
+                    <a class="nav__card" href="#"><span class="nav__card-title">Invoices</span><span class="nav__card-desc">Turn accepted quotes into invoices</span></a>
+                    <a class="nav__card" href="#"><span class="nav__card-title">Payment links</span><span class="nav__card-desc">Get paid by card or bank transfer</span></a>
+                  </div>
+                </div>
+              </div></div>
+            </div>
+            <div class="nav__pane" id="nav-pane-1" data-pane="1">
+              <div class="nav__clip"><div class="nav__body">
+                <p class="nav__title">Solutions</p>
+                <div class="nav__grid">
+                  <a class="nav__card" href="#"><span class="nav__card-title">Freelancers</span><span class="nav__card-desc">Bill clients without the admin</span></a>
+                  <a class="nav__card" href="#"><span class="nav__card-title">Design studios</span><span class="nav__card-desc">Projects, deposits and staged billing</span></a>
+                  <a class="nav__card" href="#"><span class="nav__card-title">Agencies</span><span class="nav__card-desc">Retainers and team-wide invoicing</span></a>
+                  <a class="nav__card" href="#"><span class="nav__card-title">Consultants</span><span class="nav__card-desc">Hourly work, billed accurately</span></a>
+                </div>
+              </div></div>
+            </div>
+            <div class="nav__pane" id="nav-pane-2" data-pane="2">
+              <div class="nav__clip"><div class="nav__body">
+                <p class="nav__title">Resources</p>
+                <div class="nav__grid">
+                  <a class="nav__card" href="#"><span class="nav__card-title">Help centre</span><span class="nav__card-desc">Guides for every step of getting paid</span></a>
+                  <a class="nav__card" href="#"><span class="nav__card-title">Invoice templates</span><span class="nav__card-desc">Free templates you can send today</span></a>
+                  <a class="nav__card" href="#"><span class="nav__card-title">Blog</span><span class="nav__card-desc">Stories and tips from independents</span></a>
+                  <a class="nav__card" href="#"><span class="nav__card-title">Changelog</span><span class="nav__card-desc">What's new in Billow</span></a>
+                </div>
+              </div></div>
+            </div>
+            <div class="nav__pane" id="nav-pane-3" data-pane="3">
+              <div class="nav__clip"><div class="nav__body">
+                <p class="nav__title">Company</p>
+                <div class="nav__grid">
+                  <a class="nav__card" href="#company"><span class="nav__card-title">About</span><span class="nav__card-desc">Why we built Billow</span></a>
+                  <a class="nav__card" href="#"><span class="nav__card-title">Careers</span><span class="nav__card-desc">Join a small, calm team</span></a>
+                  <a class="nav__card" href="#stories"><span class="nav__card-title">Customers</span><span class="nav__card-desc">Freelancers who stopped chasing</span></a>
+                  <a class="nav__card" href="#"><span class="nav__card-title">Contact</span><span class="nav__card-desc">Talk to a real person</span></a>
+                </div>
+              </div></div>
+            </div>
+          </div>
+        </div>
+        <div class="nav__mobile-actions">
+          <a class="btn btn--secondary" href="#">Log in</a>
+          <a class="btn btn--dark" href="#start">Start for free</a>
+        </div>
       </nav>
       <div class="nav__actions">
-        <a class="link-quiet" href="#">Log in</a>
-        <a class="btn btn--dark btn--sm" href="#start">Start free</a>
+        <a class="btn btn--secondary btn--sm nav__login" href="#">Log in</a>
+        <a class="btn btn--dark btn--sm" href="#start">Start for free</a>
+        <button class="nav__burger" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu"><span></span><span></span></button>
       </div>
     </div>
   </header>
@@ -417,8 +481,7 @@
       </div>
       <div class="footer__bottom">
         <a class="logo logo--small" href="#" aria-label="Billow home">
-          <svg viewBox="0 0 28 28" width="22" height="22" aria-hidden="true"><rect width="28" height="28" rx="8" fill="#071A31"/><path d="M6 17c2.5-4 5.5-4 8 0s5.5 4 8 0" fill="none" stroke="#5DDFD7" stroke-width="2.4" stroke-linecap="round"/><path d="M6 11.5c2.5-4 5.5-4 8 0s5.5 4 8 0" fill="none" stroke="#B89FFA" stroke-width="2.4" stroke-linecap="round" opacity=".9"/></svg>
-          <span>billow</span>
+          <img src="images/logo.svg" alt="" width="102" height="20">
         </a>
         <p class="footer__copy">© 2026 Billow</p>
       </div>

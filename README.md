@@ -18,7 +18,7 @@ then visit http://localhost:4321.
 |---|---|
 | `index.html` | Page markup |
 | `styles.css` | All styles. Design tokens (colours, spacing, radius) are at the top in `:root` |
-| `script.js` | Interactions: hero slider, stat odometer, scroll fills, card animations, CTA photos, footer word swap, form validation |
+| `script.js` | Interactions: nav dropdowns and phone menu, hero slider, stat odometer, scroll fills, card animations, CTA photos, footer word swap, form validation |
 | `images/` | Web-sized photos the page uses |
 | `source-images/` | Original full-size photos |
 
